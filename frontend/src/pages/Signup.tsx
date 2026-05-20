@@ -1,15 +1,23 @@
+import { signupUser } from "@/api/auth";
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
-    console.log(email, password);
-
-    localStorage.setItem("userAuth", JSON.stringify({ email, password }));
+    try {
+      await signupUser(email, password);
+      navigate("/login");
+    } catch {
+      setError("Signup failed. Please try again.");
+    }
   };
 
   return (
@@ -19,10 +27,13 @@ const Signup = () => {
           Sign Up
         </h1>
 
+        {error && (
+          <p className="text-sm text-red-500 text-center mb-4">{error}</p>
+        )}
+
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <div>
             <label className="text-sm font-medium text-gray-700">Email</label>
-
             <input
               type="email"
               name="email"
@@ -38,7 +49,6 @@ const Signup = () => {
             <label className="text-sm font-medium text-gray-700">
               Password
             </label>
-
             <input
               type="password"
               name="password"
@@ -54,14 +64,14 @@ const Signup = () => {
             type="submit"
             className="bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition duration-200"
           >
-            Signup
+            Sign Up
           </button>
 
           <p className="text-sm text-center text-gray-500 mt-2">
-            Don&apos;t have an account?{" "}
-            <span className="text-black font-medium cursor-pointer">
-              Sign Up
-            </span>
+            Already have an account?{" "}
+            <Link to="/login" className="text-black font-medium">
+              Login
+            </Link>
           </p>
         </form>
       </div>

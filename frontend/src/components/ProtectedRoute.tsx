@@ -1,12 +1,19 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import type { ReactNode } from "react";
 
-const ProtectedRoute = ({ children }) => {
-  const user = localStorage.getItem("user");
+type ProtectedRouteProps = {
+  children: ReactNode;
+};
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { user } = useAuth();
 
   if (!user) {
-    return <Navigate to="/signup" />;
+    return <Navigate to="/login" replace />;
   }
-  return children;
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
