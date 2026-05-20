@@ -1,15 +1,20 @@
+import { signupUser } from "@/api/auth";
 import { useState } from "react";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    console.log(email, password);
-
-    localStorage.setItem("userAuth", JSON.stringify({ email, password }));
+    try {
+      await signupUser(email, password);
+      alert("signup success");
+    } catch (error) {
+      console.log(email, password);
+      alert("signup failed");
+    }
   };
 
   return (

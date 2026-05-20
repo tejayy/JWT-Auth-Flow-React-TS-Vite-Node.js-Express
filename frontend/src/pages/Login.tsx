@@ -1,21 +1,15 @@
+import { loginUser } from "@/api/auth";
 import { useState } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    const storedUser = localStorage.getItem("authUser");
-    const parsedUser = JSON.parse(storedUser);
-
-    if (parsedUser.email === email && parsedUser.password === password) {
-      localStorage.setItem("user", JSON.stringify({ email }));
-      alert("Login success");
-    } else {
-      alert("wrong creds");
-    }
+    const res = await loginUser(email, password);
+    localStorage.setItem("token", res.data.token);
   };
 
   return (
