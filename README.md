@@ -281,6 +281,4 @@ Project Repository:
 
 [JWT-Auth-Flow-React-TS-Vite-Node.js-Express](https://github.com/tejayy/JWT-Auth-Flow-React-TS-Vite-Node.js-Express?utm_source=chatgpt.com)
 
-Inspired by common JWT authentication patterns used in React + Express applications. ([bezkoder.com][1])
-
-[1]: https://www.bezkoder.com/react-express-authentication-jwt/?utm_source=chatgpt.com "React + Node.js Express: User Authentication with JWT example - BezKoder"
+Inspired by common JWT authentication patterns used in React + Express applications.
