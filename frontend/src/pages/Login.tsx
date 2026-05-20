@@ -1,26 +1,40 @@
 import { loginUser } from "@/api/auth";
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
-    const res = await loginUser(email, password);
-    localStorage.setItem("token", res.data.token);
+    try {
+      const res = await loginUser(email, password);
+      login(res.data.token, email);
+      navigate("/dashboard");
+    } catch {
+      setError("Invalid email or password");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold text-center  mb-6">Login</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
+
+        {error && (
+          <p className="text-sm text-red-500 text-center mb-4">{error}</p>
+        )}
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <div>
             <label className="text-sm font-medium text-gray-700">Email</label>
-
             <input
               type="email"
               name="email"
@@ -36,7 +50,6 @@ const Login = () => {
             <label className="text-sm font-medium text-gray-700">
               Password
             </label>
-
             <input
               type="password"
               name="password"
@@ -57,9 +70,9 @@ const Login = () => {
 
           <p className="text-sm text-center text-gray-500 mt-2">
             Don&apos;t have an account?{" "}
-            <span className="text-black font-medium cursor-pointer">
+            <Link to="/signup" className="text-black font-medium">
               Sign Up
-            </span>
+            </Link>
           </p>
         </form>
       </div>
